@@ -1,5 +1,5 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
+from langchain_chroma import Chroma
 
 from transformers import pipeline
 from langchain_huggingface import HuggingFacePipeline
@@ -12,17 +12,17 @@ embedding_model = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
 )
 
+
 # ==========================================
-# STEP 2 - LOAD LOCAL FAISS DB
+# LOAD CHROMA VECTOR DB
 # ==========================================
 
-db = FAISS.load_local(
-    "faiss_index",
-    embedding_model,
-    allow_dangerous_deserialization=True
+db = Chroma(
+    persist_directory="chroma_db",
+    embedding_function=embedding_model
 )
 
-print("FAISS DB loaded successfully")
+print("Chroma DB loaded successfully")
 
 # ==========================================
 # STEP 3 - LOAD OPEN SOURCE LLM
