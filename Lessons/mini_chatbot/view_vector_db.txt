@@ -1,0 +1,114 @@
+from langchain.vectorstores import FAISS
+from langchain.embeddings import HuggingFaceEmbeddings
+
+# -----------------------------------------
+# STEP 1: Load Embedding Model
+# -----------------------------------------
+
+embedding_model = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+
+# -----------------------------------------
+# STEP 2: Load Existing FAISS DB
+# -----------------------------------------
+
+db = FAISS.load_local(
+    "faiss_index",   # your FAISS folder
+    embedding_model,
+    allow_dangerous_deserialization=True
+)
+
+print("\nFAISS DB loaded successfully")
+
+# -----------------------------------------
+# STEP 3: Show FAISS Index Structure
+# -----------------------------------------
+
+print("\n========== FAISS INDEX INFO ==========\n")
+
+print("Total vectors stored :", db.index.ntotal)
+
+print("Embedding dimension  :", db.index.d)
+
+print("Index type           :", type(db.index))
+
+# -----------------------------------------
+# STEP 4: Show Internal Docstore Structure
+# -----------------------------------------
+
+print("\n========== DOCSTORE STRUCTURE ==========\n")
+
+print(type(db.docstore))
+
+# Show total documents
+print("\nTotal documents in docstore :",
+      len(db.docstore._dict))
+
+# -----------------------------------------
+# STEP 5: Show Sample Documents + Metadata
+# -----------------------------------------
+
+print("\n========== SAMPLE DATA ==========\n")
+
+# Get first 3 records
+for i, (doc_id, doc) in enumerate(db.docstore._dict.items()):
+
+    print(f"\nDocument Number : {i+1}")
+    print(f"Document ID     : {doc_id}")
+
+    print("\n--- PAGE CONTENT ---")
+    print(doc.page_content)
+
+    print("\n--- METADATA ---")
+    print(doc.metadata)
+
+    print("\n" + "="*70)
+
+    # show only first 3 records
+    if i >= 2:
+        break
+
+# -----------------------------------------
+# STEP 6: Show Raw Vector Example
+# -----------------------------------------
+
+print("\n========== SAMPLE VECTOR ==========\n")
+
+# reconstruct first vector from FAISS index
+vector = db.index.reconstruct(0)
+
+print("Vector type :", type(vector))
+
+print("Vector length :", len(vector))
+
+print("\nFirst 20 vector values:\n")
+
+print(vector[:20])
+
+# -----------------------------------------
+# STEP 7: Perform Similarity Search
+# -----------------------------------------
+
+query = "python"
+
+results = db.similarity_search(
+    query,
+    k=2
+)
+
+print("\n========== SIMILARITY SEARCH ==========\n")
+
+print("Query :", query)
+
+for i, result in enumerate(results):
+
+    print(f"\nResult {i+1}")
+
+    print("\nContent:")
+    print(result.page_content)
+
+    print("\nMetadata:")
+    print(result.metadata)
+
+    print("\n" + "="*70)

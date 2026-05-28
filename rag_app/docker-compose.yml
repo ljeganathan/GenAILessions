@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./faiss_index:/app/faiss_index
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  streamlit:
+    image: python:3.11-slim
+    working_dir: /app
+    command: >
+      sh -c "pip install -q streamlit requests && streamlit run frontend_streamlit/streamlit_app.py --server.port=8501 --server.address=0.0.0.0"
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+    environment:
+      - API_BASE=http://backend:8000/api/v1
+    restart: unless-stopped

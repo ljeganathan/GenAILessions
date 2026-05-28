@@ -1,0 +1,51 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+
+# ── Virtual Environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Environment & Secrets ─────────────────────────────────────────────────────
+.env
+*.env
+!.env.example
+
+# ── RAG App Data (never commit these) ────────────────────────────────────────
+faiss_index/
+uploads/
+analytics.db
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS Files ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Node / React ──────────────────────────────────────────────────────────────
+frontend_react/node_modules/
+frontend_react/dist/
+frontend_react/.env
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ── Pytest / Coverage ─────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/

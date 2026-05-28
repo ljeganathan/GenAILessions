@@ -1,0 +1,31 @@
+# ── RAG Application — Python Dependencies ─────────────────────────────────────
+
+# Core framework
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Configuration
+pydantic
+pydantic-settings
+
+# LangChain 0.3.x family — all compatible with each other
+langchain==0.3.25
+langchain-community==0.3.24
+langchain-openai==0.3.35
+
+# OpenAI SDK — langchain-openai 0.3.x requires openai 1.x (NOT 2.x)
+openai==1.109.1
+
+# Vector DB
+faiss-cpu
+
+# PDF processing
+pypdf
+
+# Streamlit UI
+streamlit
+
+# Utilities
+python-dotenv
+requests
