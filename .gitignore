@@ -251,7 +251,7 @@ celerybeat.pid
 
 # Ignore config file
 config.json
-models/
+models_store/
 
 # Environments
 .env
